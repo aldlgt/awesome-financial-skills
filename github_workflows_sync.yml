@@ -1,0 +1,30 @@
+name: Candidate discovery
+
+on:
+  schedule:
+    - cron: '0 8 * * 1' # 每周一 UTC 08:00
+  workflow_dispatch:
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install deps
+        run: pip install PyGithub requests
+      - name: Run discovery script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python tools/fetch_candidates.py
+      - name: Create candidate PRs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python tools/create_candidate_prs.py
