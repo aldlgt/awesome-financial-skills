@@ -1,0 +1,58 @@
+name: Candidate discovery (debug)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show runner info
+        run: |
+          uname -a
+          python3 --version || python --version
+          which python3 || which python
+          echo "WORKDIR:" $(pwd)
+          ls -la .
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Show python env and install deps
+        run: |
+          python -m pip --version || true
+          python -m pip install --upgrade pip
+          python -m pip install PyGithub requests
+          python -c "import github, requests; print('PyGithub & requests import OK')"
+
+      - name: List repository files
+        run: |
+          echo ".github/workflows:"
+          ls -la .github || true
+          ls -la .github/workflows || true
+          echo "tools dir:"
+          ls -la tools || true
+
+      - name: Run fetch_candidates.py (verbose)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          set -x
+          python tools/fetch_candidates.py || (echo "fetch_candidates.py FAILED with exit $?" ; ls -la candidates || true ; exit 1)
+          echo "candidates files:"
+          ls -la candidates || true
+          for f in candidates/*.json; do echo "== $f"; head -n 20 "$f" || true; done
+
+      - name: Run create_candidate_prs.py (verbose)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          set -x
+          python tools/create_candidate_prs.py || (echo "create_candidate_prs.py FAILED with exit $?" ; exit 1)
