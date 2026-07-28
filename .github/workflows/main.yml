@@ -8,6 +8,8 @@ on:
 jobs:
   discover:
     runs-on: ubuntu-latest
+    env:
+      DRY_RUN: "1"
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
