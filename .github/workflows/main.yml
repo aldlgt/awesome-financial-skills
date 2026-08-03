@@ -32,25 +32,37 @@ jobs:
         run: |
           python tools/fetch_candidates.py
 
-      - name: Merge candidate JSONs into one file
+      - name: Merge candidate JSONs into one file (dedup by full_name, no category)
         run: |
           python - <<'PY'
           import json, glob, os
           out = []
+          seen = set()
           for p in sorted(glob.glob("candidates/*.json")):
               try:
                   arr = json.load(open(p, encoding='utf-8'))
                   if isinstance(arr, list):
-                      cat = os.path.basename(p).replace('.json','')
                       for it in arr:
-                          it['_category'] = cat
-                      out.extend(arr)
+                          # key for dedup: prefer full_name, then url
+                          key = it.get("full_name") or it.get("url")
+                          if not key:
+                              # fallback: use full JSON string representation for uniqueness
+                              rep = json.dumps(it, sort_keys=True, ensure_ascii=False)
+                              if rep in seen:
+                                  continue
+                              seen.add(rep)
+                              out.append(it)
+                              continue
+                          if key in seen:
+                              continue
+                          seen.add(key)
+                          out.append(it)
               except Exception as e:
                   print("skip", p, "err:", e)
           os.makedirs("candidates", exist_ok=True)
           with open("candidates/all_candidates.json", "w", encoding="utf-8") as f:
               json.dump(out, f, ensure_ascii=False, indent=2)
-          print("WROTE", len(out), "items to candidates/all_candidates.json")
+          print("WROTE", len(out), "unique items to candidates/all_candidates.json")
           PY
 
       - name: Package candidate repos (download zipballs)
