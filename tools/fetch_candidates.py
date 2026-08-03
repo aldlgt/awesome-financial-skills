@@ -215,6 +215,17 @@ def safe_repo_info(repo):
         "archived": getattr(repo, "archived", False)
     }
 
+def _matches_any(text, keywords):
+    if not text:
+        return False
+    t = text.lower()
+    for kw in keywords:
+        if not kw:
+            continue
+        if kw.lower() in t:
+            return True
+    return False
+
 def main():
     params = load_search_params()
     # allow env override for max_results
@@ -265,6 +276,25 @@ def main():
                 if getattr(repo, "fork", False) or getattr(repo, "archived", False):
                     continue
                 info = safe_repo_info(repo)
+                
+                # 假设 params = load_search_params() 已在 main() 开头加载
+                wl = params.get("whitelist_keywords", []) or []
+                bl = params.get("blacklist_keywords", []) or []
+
+                name = (info.get("full_name") or "").lower()
+                desc = (info.get("desc") or "").lower()
+
+                # 如果配置了白名单，必须匹配白名单中任意关键词，否则跳过
+                if wl:
+                    if not (_matches_any(name, wl) or _matches_any(desc, wl)):
+                        print("SKIP (not whitelisted):", info.get("full_name"))
+                        continue
+
+                # 黑名单匹配则跳过
+                if bl and (_matches_any(name, bl) or _matches_any(desc, bl)):
+                    print("SKIP (blacklisted):", info.get("full_name"))
+                    continue
+                
                 key = info.get("full_name") or info.get("url")
                 if not key or key in seen:
                     continue
