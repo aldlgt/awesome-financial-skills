@@ -61,7 +61,7 @@ def build_query(params):
             continue
         if " " in k or '"' in k:
             # ensure quotes around phrase
-            parts.append(f'"{k.replace(\'"\', "")}"')
+            parts.append('"' + k.replace('"', '') + '"')
         else:
             parts.append(k)
     if not parts:
