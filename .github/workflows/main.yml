@@ -9,38 +9,75 @@ jobs:
   discover:
     runs-on: ubuntu-latest
     env:
-      DRY_RUN: "1"
+      DRY_RUN: "1"            # 测试先开着，确认后设为 "0" 才会修改 repo / 创建 PR
+      MAX_DOWNLOADS: "10"     # 测试用：先下载前 10 个；确认后改回 50 或更高
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
+
       - name: Install deps
-        run: pip install PyGithub requests
-      - name: Run discovery script
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-        run: |
-          python tools/fetch_candidates.py
-      - name: Create candidate PRs
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-        run: |
-          python tools/create_candidate_prs.py
-      - name: Run discovery script
+        run: python -m pip install --upgrade pip && pip install PyGithub requests
+
+      - name: Run discovery script (fetch candidates)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           python tools/fetch_candidates.py
 
-      - name: Apply candidates to categories (dry-run by default)
+      - name: Merge candidate JSONs into one file
+        run: |
+          python - <<'PY'
+          import json, glob, os
+          out = []
+          for p in sorted(glob.glob("candidates/*.json")):
+              try:
+                  arr = json.load(open(p, encoding='utf-8'))
+                  if isinstance(arr, list):
+                      cat = os.path.basename(p).replace('.json','')
+                      for it in arr:
+                          it['_category'] = cat
+                      out.extend(arr)
+              except Exception as e:
+                  print("skip", p, "err:", e)
+          os.makedirs("candidates", exist_ok=True)
+          with open("candidates/all_candidates.json", "w", encoding="utf-8") as f:
+              json.dump(out, f, ensure_ascii=False, indent=2)
+          print("WROTE", len(out), "items to candidates/all_candidates.json")
+          PY
+
+      - name: Package candidate repos (download zipballs)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CANDIDATES_JSON: candidates/all_candidates.json
+          MAX_DOWNLOADS: ${{ env.MAX_DOWNLOADS }}
+        run: |
+          python tools/package_skills.py
+
+      - name: Upload skills artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: skills_archive
+          path: artifacts/skills
+
+      - name: Create candidate PRs (dry-run)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-          DRY_RUN: "1"   # 先测试，设为 "0" 以真正提交和创建 PR
+        run: |
+          python tools/create_candidate_prs.py
+
+      - name: Apply candidates to categories (dry-run)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          DRY_RUN: ${{ env.DRY_RUN }}
         run: |
           python tools/apply_candidates.py
