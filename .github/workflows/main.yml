@@ -30,3 +30,17 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           python tools/create_candidate_prs.py
+      - name: Run discovery script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python tools/fetch_candidates.py
+
+      - name: Apply candidates to categories (dry-run by default)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          DRY_RUN: "1"   # 先测试，设为 "0" 以真正提交和创建 PR
+        run: |
+          python tools/apply_candidates.py
