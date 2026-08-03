@@ -90,16 +90,16 @@ def build_query(params):
         q = ""  # conservative fallback: empty search (should be avoided)
     return q
 
-def build_queries(params, max_q_len=220):
+def build_queries(params, max_q_len=220, max_boolean_ops=5):
     """
-    Build multiple search queries from params so each q <= max_q_len.
+    Build multiple search queries from params so each q <= max_q_len and uses
+    at most max_boolean_ops (AND/OR/NOT) operators.
+
     Returns a list of q strings.
 
-    Strategy:
-    - Turn keywords into tokens (quoted if needed).
-    - Greedily pack tokens into groups so that the resulting query (including
-      stars/pushed qualifiers) doesn't exceed max_q_len.
-    - Return list of safe q strings to call GitHub Search with.
+    Notes:
+    - max_boolean_ops default 5 -> so tokens per group <= max_boolean_ops + 1
+    - We greedily pack tokens but will flush when either length or operator-count limit exceeded.
     """
     kws = params.get("keywords") or []
     tokens = []
@@ -121,27 +121,75 @@ def build_queries(params, max_q_len=220):
 
     queries = []
     cur = []
+    max_tokens = max_boolean_ops + 1  # tokens per group to ensure operators <= max_boolean_ops
+
     for t in tokens:
+        # check operator count if we add t
+        if cur and (len(cur) + 1) > max_tokens:
+            # finalize current group because adding t would exceed boolean op limit
+            base = " OR ".join(cur)
+            q_candidate = f"({base}) in:readme,description"
+            queries.append(" ".join([q_candidate.strip(), stars_part.strip(), pushed_part.strip()]).strip())
+            cur = [t]
+            continue
+
         # try adding t to current group and test length
         candidate_base = " OR ".join(cur + [t]) if cur else t
         q_candidate = f"({candidate_base}) in:readme,description"
         q_full = f"{q_candidate}{stars_part}{pushed_part}".strip()
         if len(q_full) > max_q_len and cur:
-            # finalize current group
+            # finalize current group (length would exceed)
             base = " OR ".join(cur)
             q_candidate = f"({base}) in:readme,description"
             queries.append(" ".join([q_candidate.strip(), stars_part.strip(), pushed_part.strip()]).strip())
             cur = [t]
         else:
             cur.append(t)
+
     if cur:
         base = " OR ".join(cur)
         q_candidate = f"({base}) in:readme,description"
         queries.append(" ".join([q_candidate.strip(), stars_part.strip(), pushed_part.strip()]).strip())
 
-    # ensure queries are non-empty and under limit
-    queries = [q for q in queries if q and len(q) <= max_q_len]
-    return queries
+    # ensure queries are non-empty and under length limit and operator limit
+    final_queries = []
+    for q in queries:
+        if not q:
+            continue
+        # quick operator count check: count occurrences of ' OR ' / ' AND ' / ' NOT '
+        ops = q.count(" OR ") + q.count(" AND ") + q.count(" NOT ")
+        if ops > max_boolean_ops:
+            # fallback: split tokens more conservatively by forcing groups of size max_tokens
+            # simple conservative split:
+            flat_tokens = []
+            # extract tokens from q's first parenthesis group
+            if q.startswith("("):
+                # crude parse: find first ')' and split inner by ' OR '
+                try:
+                    inner = q.split(")", 1)[0][1:]
+                    flat_tokens = [s.strip() for s in inner.split(" OR ") if s.strip()]
+                except Exception:
+                    flat_tokens = []
+            if flat_tokens:
+                # split into chunks
+                for i in range(0, len(flat_tokens), max_tokens):
+                    chunk = flat_tokens[i:i+max_tokens]
+                    base = " OR ".join(chunk)
+                    q_candidate = f"({base}) in:readme,description"
+                    final_queries.append(" ".join([q_candidate.strip(), stars_part.strip(), pushed_part.strip()]).strip())
+            else:
+                # if we couldn't parse, skip this query
+                continue
+        else:
+            final_queries.append(q)
+    # remove any duplicates while preserving order
+    seen_q = set()
+    ordered = []
+    for q in final_queries:
+        if q not in seen_q:
+            seen_q.add(q)
+            ordered.append(q)
+    return ordered
 
 def get_github_client(token):
     if not token:
@@ -175,7 +223,7 @@ def main():
     except Exception:
         max_results = params.get("max_results", 200)
 
-    # Build queries (split into multiple safe-length q strings)
+    # Build queries (split into multiple safe-length q strings and operator-count safe)
     queries = build_queries(params)
     if not queries:
         # Fallback: try single query builder (very conservative)
@@ -227,6 +275,9 @@ def main():
                 print("Error processing repo:", e)
                 traceback.print_exc()
                 continue
+
+        # short pause to avoid hitting rate limits when running many queries in a row
+        time.sleep(1)
 
     # write output
     try:
