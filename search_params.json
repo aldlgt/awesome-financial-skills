@@ -1,11 +1,13 @@
 {
   "keywords": 
   [
-    "finance", "fintech", "investment", "stock", "trading", "quant", "crypto",
-    "market-data", "industry-analysis", "market-research", "equity-research",
-    "bond", "credit-risk", "etf", "wealth-management",
-    "financial-data", "economic-indicators", "metasearch", "knowledge-base",
-    "研报"
+    "股票分析", "基金估值",  "财报分析", "研报", "可转债", "多因子",
+    "quant trading", "backtesting", "algorithmic trading", "trading strategy",
+    "stock analysis", "equity research", "portfolio optimization", "factor investing",
+    "market data api", "financial statement analysis", "sec edgar", "xbrl",
+    "akshare", "tushare", "vnpy", "backtrader", "qlib", "ccxt",
+    "defi analytics", "on-chain data", "crypto trading",
+    "金融 skill", "金融 agent", "金融 mcp", "finance agent", "trading agent", "quant skill"
   ],
   "date_from": "2026-07-25",
   "date_to": "2026-07-31",
@@ -14,40 +16,57 @@
   
   "whitelist_keywords": 
   [
-    "yfinance", "alpha vantage", "polygon.io", "finnhub", "quandl", "bloomberg", "wind", "tushare", "akshare", "baostock", "binance", "ccxt", "coingecko", "interactive brokers", "ibkr", "alpaca", "quantconnect", "backtrader", "vnpy", "东方财富", "同花顺", "雪球", "聚宽",
-    "ohlc", "ohlcv", "candlestick", "vwap", "twap", "order book", "tick data", "limit order", "stop loss", "arbitrage", "hedging", "short selling", "margin trading", "leverage",
-    "sharpe ratio", "max drawdown", "cagr", "annualized return", "turnover", "macd", "rsi", "bollinger bands", "moving average", "multi-factor",
-    "K线", "止损", "止盈", "套利", "套期保值", "做空", "融资融券", "夏普比率", "最大回撤", "年化收益", "换手率", "量化策略", "多因子",
-    "pe ratio", "pb ratio", "market cap", "eps", "roe", "ebitda", "free cash flow", "dividend yield", "balance sheet", "income statement", "cash flow statement",
-    "市盈率", "市净率", "市值", "自由现金流", "股息率", "资产负债表", "利润表", "现金流量表",
-    "sec edgar", "10-k", "10-q", "8-k", "s-1", "xbrl", "prospectus", "13f", "招股说明书",
-    "defi", "dex", "on-chain", "smart contract", "staking", "tvl", "uniswap", "链上", "空投",
-    "涨停", "跌停", "龙虎榜", "北向资金", "打新", "次新股", "龙头股", "上证指数", "沪深300", "科创板", "主力净流入",
-    "equity research", "initiation report", "target price", "earnings forecast", "industry chain", "market size", "TAM", "penetration rate", "market share", "import substitution", "competitive landscape", "moat",
-    "深度报告", "首次覆盖", "目标价", "盈利预测", "可比公司", "产业链", "市场规模", "渗透率", "市占率", "国产替代", "景气度", "产能利用率", "护城河", "专家访谈", "会议纪要",
-    "pipeline", "indication", "phase iii", "IND", "NDA", "license-out", "CRO", "CDMO",
+        "stock market", "stock analysis", "stocks", "equity research", "equity", "trading strategy", "quant trading",
+    "quantitative", "backtest", "backtesting", "algorithmic trading", "portfolio optimization", "portfolio management",
+    "asset allocation", "risk parity", "sharpe", "drawdown", "ohlc", "ohlcv", "candlestick", "order book", "vwap",
+    "twap", "etf", "mutual fund", "hedge fund", "market data", "financial data", "financial statement", "balance sheet",
+    "income statement", "cash flow", "dcf", "valuation", "earnings", "dividend", "ticker", "sec edgar", "xbrl",
+    "10-k", "10-q", "13f", "prospectus", "fixed income", "credit risk", "credit spread", "bond market", "fintech",
+    "payment", "payments",
+    "akshare", "tushare", "baostock", "yfinance", "vnpy", "backtrader", "zipline", "qlib",
+    "quantconnect", "ccxt", "alpaca", "interactive brokers", "ibkr", "binance", "coingecko", "finnhub", "polygon.io",
+    "alpha vantage", "quandl", "qmt", "xtquant",
+    "defi", "dex", "uniswap", "on-chain", "staking", "tvl", "链上", "空投", "crypto trading", "cryptocurrency"
+    "研报", "深度报告", "首次覆盖", "目标价", "盈利预测", "可比公司", "产业链", "市场规模", "渗透率", "市占率",
+    "国产替代", "景气度", "产能利用率", "护城河", "专家访谈", "会议纪要",
+    "equity research", "initiation report", "target price", "earnings forecast", "industry chain", "market size",
+    "penetration rate", "market share", "competitive landscape", "moat",
     "管线", "靶点", "适应症", "创新药", "获批", "集采", "医保谈判",
-    "foundry", "advanced node", "lithography", "etching", "DRAM", "NAND", "HBM", "IGBT", "SiC", "power semiconductor",
+    "pipeline", "indication", "phase iii", "license-out", "cro", "cdmo",
     "晶圆代工", "先进制程", "光刻", "刻蚀", "功率半导体", "碳化硅",
-    "MDI", "titanium dioxide", "glyphosate", "electrolyte", "cathode material", "separator",
+    "foundry", "advanced node", "lithography", "hbm", "igbt", "sic",
     "钛白粉", "磷化工", "氟化工", "草甘膦", "电解液", "正极材料",
-    "multimodal", "inference cost", "agentic", "computing power", "commercialization", "大模型", "算力", "商业化落地",
-    "photovoltaic module", "TOPCon", "lithium carbonate", "光伏组件", "碳酸锂", "储能",
-    "credit rating", "rating downgrade", "outlook negative", "technical default", "debt restructuring", "credit spread", "term spread", "refinancing bond", "solvency", "interest coverage", "put option", "CDS", "NPL", "provision coverage", "capital adequacy",
-    "主体评级", "债项评级", "评级下调", "实质性违约", "展期", "债务重组", "信用利差", "城投债", "化债", "偿债能力", "资产负债率", "募集说明书", "回售", "不良率", "拨备覆盖率",
-    "benchmark", "net asset value", "subscription", "redemption", "fund size", "management fee", "morningstar rating", "calmar ratio", "sortino ratio", "information ratio", "tracking error", "index enhanced", "market neutral", "CTA strategy", "snowball structure", "FOF", "MOM", "QDII", "public REITs", "IOPV",
-    "业绩比较基准", "复权净值", "申购", "赎回", "基金规模", "晨星评级", "卡玛比率", "跟踪误差", "指数增强", "市场中性", "量化对冲", "雪球结构", "收益凭证", "公募REITs", "溢价率", "折价率",
-    "multi-source aggregation", "one-stop query", "unified interface", "metasearch", "indicator library", "data dictionary", "time-series database", "knowledge graph", "entity relation", "semantic retrieval", "vector retrieval", "retrieval-augmented generation", "data visualization", "dashboard",
-    "多源聚合", "一站式查询", "统一接口", "指标库", "指标口径", "数据字典", "时序数据库", "知识图谱", "语义检索", "向量检索", "检索增强", "数据可视化"
+    "光伏组件", "碳酸锂", "储能", "topcon", "lithium carbonate",
+    "主体评级", "债项评级", "评级下调", "实质性违约", "展期", "债务重组", "化债", "偿债能力", "募集说明书",
+    "回售", "不良率", "拨备覆盖率", "credit rating", "rating downgrade", "debt restructuring", "solvency",
+    "业绩比较基准", "复权净值", "基金规模", "晨星评级", "卡玛比率", "跟踪误差", "收益凭证", "溢价率", "折价率",
+    "morningstar", "calmar ratio", "sortino ratio", "information ratio", "tracking error", "fof", "qdii", "reits", "iopv",
+    "多源聚合", "一站式查询", "统一接口", "指标库", "指标口径", "数据字典", "时序数据库", "知识图谱",
+    "语义检索", "向量检索", "检索增强", "数据可视化",
+    "multi-source aggregation", "unified interface", "indicator library", "data dictionary", "time-series database",
+    "knowledge graph", "semantic retrieval", "retrieval-augmented generation",
+    "macd", "rsi", "bollinger bands", "moving average", "turnover", "vwap", "twap", "limit order", "arbitrage",
+    "hedging", "short selling", "margin trading"
   ],
 
   "blacklist_keywords": 
   [
-  "casino", "gambling", "betting", "lottery", "poker", "blackjack", "slot machine", "roulette", "sportsbook", 
-    "赌博", "彩票", "博彩", "棋牌", "游戏", "movie", "music", "novel", "电影", "小说", "homework", "assignment", 
-    "coursework", "coursera", "课程设计", "毕业设计", "大作业", "面试", "leetcode", "stock photo", "inventory", 
-    "warehouse", "portfolio website", "personal portfolio", "design portfolio", "resume", "diversity", "inclusion", 
-    "dei", "taxonomy", "uppercase", "库存", "作品集"
+    "new grad", "new-grad", "internship", "internships", "jobs", "job board", "hiring", "校招", "社招", "招聘",
+    "简历", "resume", "interview", "leetcode", "salary",
+    "game", "gaming", "模组", "补丁", "minecraft", "slay the spire", "genshin", "原神", "galgame", "emulator",
+    "nintendo", "ryujinx", "农场", "steam", "联机", "mod",
+    "nitro", "keygen", "crack", "spoofer", "njrat", "free download",
+    "quantum", "quantization", "quantized", "量子",
+    "movie", "电影", "music", "音乐", "novel", "小说", "manga", "漫画", "anime", "影视", "短剧", "口播",
+    "podcast", "rss", "downloader", "下载器",
+    "管理后台", "后台管理", "rbac", "权限管理", "多租户", "商城", "电商", "crm", "erp", "进销存", "工作流引擎", "oa系统",
+    "homework", "assignment", "coursework", "课程设计", "毕业设计", "大作业", "高考", "真题", "课程",
+    "firmware", "固件", "嵌入式", "无人机", "uav", "bluetooth", "蓝牙", "fpga", "verilog", "pcb",
+    "渗透", "waf", "pentest", "vulnerability", "exploit", "红队",
+    "dotfiles", "alfred", "机场", "clash", "vpn", "占星", "astrology", "quran", "地震",
+    "casino", "gambling", "betting", "lottery", "poker", "blackjack", "slot machine", "roulette", "sportsbook",
+    "赌博", "彩票", "博彩", "棋牌", "stock photo", "inventory", "warehouse", "库存",
+    "portfolio website", "personal portfolio", "design portfolio", "作品集", "diversity", "inclusion", "dei", "tiktok"
   ]
 }
 
