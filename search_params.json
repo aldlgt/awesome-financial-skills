@@ -1,7 +1,53 @@
 {
-  "keywords": ["semiconductor","国内替代","行业指标","创新药","新药","drug discovery","credit bond pricing","信用债","fixed income","CAMS","主体信用","credit score","research aggregator","投研聚合","data pipeline","semiconductor indicators","knowledge base","知识检索","qa system"],
+  "keywords": 
+  [
+    "finance", "fintech", "investment", "stock", "trading", "quant", "crypto",
+    "market-data", "industry-analysis", "market-research", "equity-research",
+    "bond", "credit-risk", "etf", "wealth-management",
+    "financial-data", "economic-indicators", "metasearch", "knowledge-base",
+    "研报"
+  ],
   "date_from": "2026-07-25",
   "date_to": "2026-07-31",
   "stars": 10,
-  "max_results": 200
+  "max_results": 50
+  
+  "whitelist_keywords": 
+  [
+    "yfinance", "alpha vantage", "polygon.io", "finnhub", "quandl", "bloomberg", "wind", "tushare", "akshare", "baostock", "binance", "ccxt", "coingecko", "interactive brokers", "ibkr", "alpaca", "quantconnect", "backtrader", "vnpy", "东方财富", "同花顺", "雪球", "聚宽",
+    "ohlc", "ohlcv", "candlestick", "vwap", "twap", "order book", "tick data", "limit order", "stop loss", "arbitrage", "hedging", "short selling", "margin trading", "leverage",
+    "sharpe ratio", "max drawdown", "cagr", "annualized return", "turnover", "macd", "rsi", "bollinger bands", "moving average", "multi-factor",
+    "K线", "止损", "止盈", "套利", "套期保值", "做空", "融资融券", "夏普比率", "最大回撤", "年化收益", "换手率", "量化策略", "多因子",
+    "pe ratio", "pb ratio", "market cap", "eps", "roe", "ebitda", "free cash flow", "dividend yield", "balance sheet", "income statement", "cash flow statement",
+    "市盈率", "市净率", "市值", "自由现金流", "股息率", "资产负债表", "利润表", "现金流量表",
+    "sec edgar", "10-k", "10-q", "8-k", "s-1", "xbrl", "prospectus", "13f", "招股说明书",
+    "defi", "dex", "on-chain", "smart contract", "staking", "tvl", "uniswap", "链上", "空投",
+    "涨停", "跌停", "龙虎榜", "北向资金", "打新", "次新股", "龙头股", "上证指数", "沪深300", "科创板", "主力净流入",
+    "equity research", "initiation report", "target price", "earnings forecast", "industry chain", "market size", "TAM", "penetration rate", "market share", "import substitution", "competitive landscape", "moat",
+    "深度报告", "首次覆盖", "目标价", "盈利预测", "可比公司", "产业链", "市场规模", "渗透率", "市占率", "国产替代", "景气度", "产能利用率", "护城河", "专家访谈", "会议纪要",
+    "pipeline", "indication", "phase iii", "IND", "NDA", "license-out", "CRO", "CDMO",
+    "管线", "靶点", "适应症", "创新药", "获批", "集采", "医保谈判",
+    "foundry", "advanced node", "lithography", "etching", "DRAM", "NAND", "HBM", "IGBT", "SiC", "power semiconductor",
+    "晶圆代工", "先进制程", "光刻", "刻蚀", "功率半导体", "碳化硅",
+    "MDI", "titanium dioxide", "glyphosate", "electrolyte", "cathode material", "separator",
+    "钛白粉", "磷化工", "氟化工", "草甘膦", "电解液", "正极材料",
+    "multimodal", "inference cost", "agentic", "computing power", "commercialization", "大模型", "算力", "商业化落地",
+    "photovoltaic module", "TOPCon", "lithium carbonate", "光伏组件", "碳酸锂", "储能",
+    "credit rating", "rating downgrade", "outlook negative", "technical default", "debt restructuring", "credit spread", "term spread", "refinancing bond", "solvency", "interest coverage", "put option", "CDS", "NPL", "provision coverage", "capital adequacy",
+    "主体评级", "债项评级", "评级下调", "实质性违约", "展期", "债务重组", "信用利差", "城投债", "化债", "偿债能力", "资产负债率", "募集说明书", "回售", "不良率", "拨备覆盖率",
+    "benchmark", "net asset value", "subscription", "redemption", "fund size", "management fee", "morningstar rating", "calmar ratio", "sortino ratio", "information ratio", "tracking error", "index enhanced", "market neutral", "CTA strategy", "snowball structure", "FOF", "MOM", "QDII", "public REITs", "IOPV",
+    "业绩比较基准", "复权净值", "申购", "赎回", "基金规模", "晨星评级", "卡玛比率", "跟踪误差", "指数增强", "市场中性", "量化对冲", "雪球结构", "收益凭证", "公募REITs", "溢价率", "折价率",
+    "multi-source aggregation", "one-stop query", "unified interface", "metasearch", "indicator library", "data dictionary", "time-series database", "knowledge graph", "entity relation", "semantic retrieval", "vector retrieval", "retrieval-augmented generation", "data visualization", "dashboard",
+    "多源聚合", "一站式查询", "统一接口", "指标库", "指标口径", "数据字典", "时序数据库", "知识图谱", "语义检索", "向量检索", "检索增强", "数据可视化"
+  ],
+
+  "blacklist_keywords": 
+  [
+  "casino", "gambling", "betting", "lottery", "poker", "blackjack", "slot machine", "roulette", "sportsbook", 
+    "赌博", "彩票", "博彩", "棋牌", "游戏", "movie", "music", "novel", "电影", "小说", "homework", "assignment", 
+    "coursework", "coursera", "课程设计", "毕业设计", "大作业", "面试", "leetcode", "stock photo", "inventory", 
+    "warehouse", "portfolio website", "personal portfolio", "design portfolio", "resume", "diversity", "inclusion", 
+    "dei", "taxonomy", "uppercase", "库存", "作品集"
+  ]
 }
+
